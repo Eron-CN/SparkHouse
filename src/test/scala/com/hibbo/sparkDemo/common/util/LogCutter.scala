@@ -1,4 +1,4 @@
-package com.hibbo.odinml.LogUtil
+package com.hibbo.sparkDemo.common.util
 
 import com.hibbo.sparkDemo.SparkFunSuite
 import org.apache.spark.sql.types.{StringType, StructField, StructType}

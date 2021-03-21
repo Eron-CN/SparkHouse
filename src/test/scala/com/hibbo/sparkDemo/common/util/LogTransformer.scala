@@ -1,7 +1,7 @@
-package com.hibbo.odinml.LogUtil
+package com.hibbo.sparkDemo.common.util
 
 import com.hibbo.sparkDemo.SparkFunSuite
-import org.apache.spark.sql.{Row, SaveMode, SparkSession}
+import org.apache.spark.sql.{SaveMode, SparkSession}
 
 class LogTransformer extends SparkFunSuite{
   test("test LogTransformer"){

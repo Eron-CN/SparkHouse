@@ -1,4 +1,4 @@
-package com.hibbo.bankDemo.datatype
+package com.hibbo.sparkDemo.common.datatype
 
 import org.apache.spark.sql.types._
 
