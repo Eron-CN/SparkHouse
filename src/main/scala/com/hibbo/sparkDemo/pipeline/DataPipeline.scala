@@ -26,10 +26,11 @@ trait DataPipeline extends TransformerBase {
     }
   }
 
-  def read(spark: SparkSession, rawInputPath: String): DataFrame
+  def read(spark: SparkSession, rawInputPath: String, fileFormat: String): DataFrame
 
   def handle(sparkSession: SparkSession, argsMap: Map[String, String]): Unit = {
     val rawInputPath                  = argsMap("--FilePath".toLowerCase)
+    val fileFormat                    = argsMap("--FileFormat".toLowerCase)
     val persistLevelStr               = argsMap.getOrElse("--PersistLevel".toLowerCase, "")
     val extensionProperties           = argsMap.getOrElse("--ExtensionProperties".toLowerCase, "") //The input format is "a->b,c->d"
     val outputPath                    = argsMap("--OutputPath".toLowerCase)
@@ -38,14 +39,14 @@ trait DataPipeline extends TransformerBase {
     val context = enrichExtensionProperties(extensionProperties)
 
     // 1. read raw data to df/ds
-    val rawDF = read(sparkSession, rawInputPath)
+    val rawDF = read(sparkSession, rawInputPath, fileFormat)
     // 2. transform data
     val transformDF = transform(sparkSession, rawDF, persistLevel, context)
     // 3. output data
     output(sparkSession, transformDF, "parquet", outputPath)
   }
 
-  def output(sparkSession: SparkSession,
+  def output(spark: SparkSession,
              dataFrame: DataFrame,
              format: String,
              outputPath: String): Unit
@@ -69,15 +70,7 @@ trait DataPipeline extends TransformerBase {
   }
 
   def enrichExtensionProperties(extensionProperties: String): PipelineContext = {
-    if(!CommonUtil.isNullOrEmpty(extensionProperties)){
-      val map = extensionProperties
-        .split(",")
-        .filter(_.trim != "")
-        .map(item => (item.split("->")(0).trim, item.split("->")(1).trim))
-        .toMap
-      new PipelineContext(map)
-    } else {
-      null
-    }
+    val parseExensionProperties = CommonUtil.parseExtensionProperties(extensionProperties)
+    new PipelineContext(parseExensionProperties)
   }
 }
