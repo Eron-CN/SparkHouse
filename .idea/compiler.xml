@@ -6,8 +6,10 @@
         <sourceOutputDir name="mvn/generated-sources/annotations" />
         <sourceTestOutputDir name="mvn/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="SparkHouse" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="SparkHouse" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
