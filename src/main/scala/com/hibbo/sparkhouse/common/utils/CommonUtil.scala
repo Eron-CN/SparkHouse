@@ -241,4 +241,21 @@ object CommonUtil {
       null
     }
   }
+
+  /**
+   * Parse aether input paras, the format of args are (a,b,--paramname1,value1,--paramname2,value2)
+   * Param Name to lower case
+   *
+   * @para Array [String]: the application args
+   * @return Map[String,String]: the param in pairs
+   */
+  def ParseArgs(args: Array[String]): Map[String, String] = {
+    var result = Map[String, String]()
+    for (i <- 0 to args.length - 1) {
+      if (args(i).startsWith("--") && i + 1 < args.length && !args(i + 1).startsWith("--")) {
+        result += (args(i).trim.toLowerCase -> args(i + 1).trim)
+      }
+    }
+    result
+  }
 }
